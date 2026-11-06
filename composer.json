@@ -1,13 +1,22 @@
 {
     "name": "glavweb/api-bundle",
-    "version": "dev-main",
     "type": "symfony-bundle",
     "description": "CQRS/REST/OpenAPI helpers for Glavweb APIs",
     "license": "MIT",
-    "authors": [{"name": "GLAVWEB", "homepage": "https://glavweb.ru"}],
+    "authors": [
+        {
+            "name": "Andrey Nilov",
+            "email": "nilov@glavweb.ru",
+            "homepage": "https://glavweb.ru"
+        },
+        {
+            "name": "Glavweb Community",
+            "homepage": "https://github.com/glavweb/GlavwebApiBundle/contributors"
+        }
+    ],
     "require": {
         "php": ">=8.4",
-        "glavweb/extra-bundle": "dev-main",
+        "glavweb/extra-bundle": "^1.0",
         "glavweb/datagrid-bundle": "^4.0",
         "glavweb/data-schema-bundle": "^3.0",
         "league/tactician-bundle": "^1.6",
