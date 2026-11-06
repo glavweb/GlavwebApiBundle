@@ -1,0 +1,7 @@
+services:
+    Glavweb\ApiBundle\ApiDoc\MediaRouteDescriber:
+        autowire: true
+        arguments:
+            $uploaderConfig: '%glavweb_uploader.config%'
+        tags:
+            - { name: nelmio_api_doc.route_describer, priority: -400 }

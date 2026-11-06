@@ -1,0 +1,12 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        bind:
+            $entityNamespace: '%glavweb_api.maker.entity_namespace%'
+
+    Glavweb\ApiBundle\Maker\ApiControllerMaker:
+        tags: ['maker.command']
+
+    Glavweb\ApiBundle\Maker\Helper\:
+        resource: '../src/Maker/Helper'

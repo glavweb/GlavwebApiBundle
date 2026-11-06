@@ -1,0 +1,13 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    Glavweb\ApiBundle\:
+        resource: '../src/'
+        exclude:
+            - '../src/GlavwebApiBundle.php'
+            - '../src/Maker/'
+            - '../src/ApiDoc/MediaRouteDescriber.php'
+            - '../src/ApiDoc/Model/'
+            - '../src/Imagine/FirstFrameImagine.php'
