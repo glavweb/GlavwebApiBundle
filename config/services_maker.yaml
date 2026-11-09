@@ -8,5 +8,11 @@ services:
     Glavweb\ApiBundle\Maker\ApiControllerMaker:
         tags: ['maker.command']
 
+    Glavweb\ApiBundle\Maker\MakeCommand:
+        tags: ['maker.command']
+
+    Glavweb\ApiBundle\Maker\MakeQuery:
+        tags: ['maker.command']
+
     Glavweb\ApiBundle\Maker\Helper\:
         resource: '../src/Maker/Helper'

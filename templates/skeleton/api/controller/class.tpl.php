@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace <?php echo $namespace; ?>;
 
-use App\Controller\Api\AbstractController;
+use Glavweb\ApiBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use OpenApi\Attributes as OA;

@@ -94,6 +94,7 @@ class ApiControllerMaker extends AbstractMaker
             ''
         );
 
+        // Path mirrors Entity: Task\Task → Controller\Api\Task\TaskController
         $controllerClass = $generator->createClassNameDetails(
             $modelArgument,
             'Controller\\Api\\',

@@ -11,3 +11,19 @@ services:
             - '../src/ApiDoc/MediaRouteDescriber.php'
             - '../src/ApiDoc/Model/'
             - '../src/Imagine/FirstFrameImagine.php'
+            - '../src/Controller/AbstractController.php'
+            - '../src/ErrorCodes.php'
+            - '../src/Exception/'
+
+    Glavweb\ApiBundle\EventListener\ExceptionListener:
+        arguments:
+            $debug: '%kernel.debug%'
+            $environment: '%kernel.environment%'
+            $exceptions: '%glavweb_api.exceptions%'
+            $trustResolver: '@security.authentication.trust_resolver'
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException, priority: 10 }
+
+    Glavweb\ApiBundle\Security\AccessToken\UserTokenAuthenticationEntryPoint:
+        arguments:
+            $failureHandler: '@Glavweb\ApiBundle\Security\AccessToken\UserTokenAuthenticationFailureHandler'
