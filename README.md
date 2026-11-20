@@ -29,3 +29,18 @@ api:
 
 Невалидный/протухший токен экстрактор приравнивает к отсутствию: запрос идёт анонимно, 401 отдаёт entry point
 только на защищённых эндпоинтах. Другая авторизация (JWT, сессия) — свои extractor/handler в `security.yaml`.
+
+## Список: filter и sort
+
+`ApiFilter` читает query. `limit`, `offset`, `sort`, `scope` остаются на верхнем уровне.
+
+```
+filter[title]=Hello
+filter[price][gte]=10&filter[price][lt]=100
+filter[status][in][]=draft&filter[status][in][]=published
+sort=-createdAt,title
+```
+
+Голое значение — `eq`. Несколько условий — И. Имена операторов: `eq`, `neq`, `gt`, `gte`, `lt`, `lte`, `contains`, `not_contains`, `in`, `nin`.
+Кривой фильтр или сортировка — `ClientErrorException` с кодом `PARAMETER_WRONG_FORMAT` (HTTP 400).
+`ListQuery::$filters` заполняет `Populator` по атрибуту `FilterBag`. В datagrid именованная карта уходит в `build()` как есть.

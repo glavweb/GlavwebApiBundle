@@ -11,8 +11,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Glavweb\ApiBundle\Attribute\AttributeReader;
 use Glavweb\ApiBundle\Attribute\EntityField;
+use Glavweb\ApiBundle\Attribute\FilterBag;
 use Glavweb\ApiBundle\Attribute\FromRequest;
 use Glavweb\ApiBundle\Attribute\SystemRequestField;
+use Glavweb\ApiBundle\Query\ApiFilter;
 use Glavweb\ApiBundle\Exception\InvalidCommandPropertyException;
 use Glavweb\ExtraBundle\Http\RequestBag;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,6 +43,13 @@ class Populator
         $properties = $reflectionClass->getProperties();
 
         foreach ($properties as $property) {
+            if ($this->attributeReader->getPropertyAttribute($property, FilterBag::class) instanceof FilterBag) {
+                $property->setAccessible(true);
+                $property->setValue($object, ApiFilter::fromRequest($request));
+
+                continue;
+            }
+
             $fromRequest = $this->attributeReader->getPropertyAttribute($property, FromRequest::class);
             if (!$fromRequest instanceof FromRequest) {
                 continue;
