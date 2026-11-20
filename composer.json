@@ -18,7 +18,7 @@
         "php": ">=8.4",
         "glavweb/extra-bundle": "^1.0",
         "glavweb/framework-bundle": "^1.0",
-        "glavweb/datagrid-bundle": "^4.0",
+        "glavweb/datagrid-bundle": "^5.0",
         "glavweb/data-schema-bundle": "^3.0",
         "league/tactician-bundle": "^1.6",
         "nelmio/api-doc-bundle": "^5.0",
