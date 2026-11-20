@@ -44,3 +44,4 @@ sort=-createdAt,title
 Голое значение — `eq`. Несколько условий — И. Имена операторов: `eq`, `neq`, `gt`, `gte`, `lt`, `lte`, `contains`, `not_contains`, `in`, `nin`.
 Кривой фильтр или сортировка — `ClientErrorException` с кодом `PARAMETER_WRONG_FORMAT` (HTTP 400).
 `ListQuery::$filters` заполняет `Populator` по атрибуту `FilterBag`. В datagrid именованная карта уходит в `build()` как есть.
+`ResultSetResponse` отвечает 200 и `{ "data", "total", "offset", "limit" }`. Один объект — без этой обёртки.
