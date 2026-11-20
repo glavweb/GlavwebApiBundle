@@ -51,7 +51,7 @@ class ExceptionListener
         InvalidCommandException::class => ['status' => Response::HTTP_BAD_REQUEST, 'message' => 'Переданные данные содержат ошибки.'],
         InvalidCommandPropertyException::class => ['status' => Response::HTTP_BAD_REQUEST, 'message' => 'Переданные данные содержат ошибки.'],
         ValidationException::class => ['status' => Response::HTTP_BAD_REQUEST, 'message' => null],
-        ClientErrorException::class => ['status' => 420, 'message' => null],
+        ClientErrorException::class => ['status' => Response::HTTP_UNPROCESSABLE_ENTITY, 'message' => null],
     ];
 
     /**
@@ -134,6 +134,22 @@ class ExceptionListener
             ];
         }
 
+        if ($exception instanceof ClientErrorException && $exception->getViolations() !== null && $exception->getViolations()->count() > 0) {
+            $errorFields = [];
+            foreach ($exception->getViolations() as $violation) {
+                $errorFields[] = [
+                    'property' => $violation->getPropertyPath(),
+                    'message' => $violation->getMessage(),
+                ];
+            }
+
+            $body = [
+                'code' => $exception->getCode(),
+                'message' => $message,
+                'fields' => $errorFields,
+            ];
+        }
+
         if (!$body) {
             $body = [
                 'code' => $exception->getCode(),
@@ -165,7 +181,30 @@ class ExceptionListener
 
     private function getStatusCodeByException(Throwable $exception): int
     {
+        if ($exception instanceof ClientErrorException) {
+            return $this->statusForClientError($exception);
+        }
+
         return $this->findMapping($exception)['status'] ?? Response::HTTP_INTERNAL_SERVER_ERROR;
+    }
+
+    /**
+     * 400 — запрос не собрался. 422 — собрался, домен отказал.
+     * Неизвестный объект и ошибки входа остаются 404 и 401.
+     */
+    private function statusForClientError(ClientErrorException $exception): int
+    {
+        return match ($exception->getCode()) {
+            ErrorCodes::FORM_VALIDATION_FAILED,
+            ErrorCodes::PARAMETER_WRONG_FORMAT,
+            ErrorCodes::PARAMETER_NOT_FOUND => Response::HTTP_BAD_REQUEST,
+            ErrorCodes::ENTITY_NOT_FOUND,
+            ErrorCodes::USER_NOT_FOUND => Response::HTTP_NOT_FOUND,
+            ErrorCodes::USER_NOT_AUTHENTICATED,
+            ErrorCodes::USER_WRONG_AUTH_TOKEN,
+            ErrorCodes::USER_WRONG_USERNAME_OR_PASSWORD => Response::HTTP_UNAUTHORIZED,
+            default => Response::HTTP_UNPROCESSABLE_ENTITY,
+        };
     }
 
     private function getMessageByException(Throwable $exception): string

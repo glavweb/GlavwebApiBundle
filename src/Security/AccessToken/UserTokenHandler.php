@@ -10,7 +10,7 @@ use Symfony\Component\Security\Http\AccessToken\AccessTokenHandlerInterface;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 
 /**
- * Resolves the user from X-User-Token via UserProviderTokenInterface.
+ * Resolves the user from Authorization: Bearer via UserProviderTokenInterface.
  *
  * @author nilov <nilov@glavweb.ru>
  */

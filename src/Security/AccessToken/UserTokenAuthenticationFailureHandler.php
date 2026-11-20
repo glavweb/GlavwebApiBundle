@@ -24,7 +24,7 @@ final class UserTokenAuthenticationFailureHandler implements AuthenticationFailu
             'code' => ErrorCodes::USER_NOT_AUTHENTICATED,
             'message' => ErrorCodes::getMessage(ErrorCodes::USER_NOT_AUTHENTICATED),
         ], Response::HTTP_UNAUTHORIZED, [
-            'WWW-Authenticate' => 'X-User-Token error="invalid_token"',
+            'WWW-Authenticate' => 'Bearer error="invalid_token"',
         ]);
     }
 }

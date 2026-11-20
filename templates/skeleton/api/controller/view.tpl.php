@@ -22,13 +22,13 @@ $roleEntity = strtoupper($helper->tableize($modelClass->getShortName()));
     #[Output(dataSchema: "<?php echo $dataSchema; ?>", scope: "<?php echo $scope; ?>")]
     #[Scope(name: "view", path: "<?php echo $scope; ?>")]
     #[Route("<?php echo $route; ?>", name: "<?php echo $routeName; ?>", methods: ["GET"])]
-    #[OA\Get(tags: ['<?php echo $modelClass->getShortName(); ?>'], parameters: [new OA\Parameter(name: '$scope', in: 'query', schema: new OA\Schema(type: 'string'), description: 'Область видимости данных')], responses: [new OA\Response(response: 200, description: 'Запрос выполнен успешно.'), new OA\Response(response: 403, description: 'Доступ запрещен.')])]
+    #[OA\Get(tags: ['<?php echo $modelClass->getShortName(); ?>'], parameters: [new OA\Parameter(name: 'scope', in: 'query', schema: new OA\Schema(type: 'string'), description: 'Область видимости данных')], responses: [new OA\Response(response: 200, description: 'Запрос выполнен успешно.'), new OA\Response(response: 403, description: 'Доступ запрещен.')])]
     #[IsGranted("ROLE_<?php echo $roleEntity; ?>_VIEW")]
     public function get<?php echo $modelClass->getShortName(); ?>Action(<?php echo $modelClass->getShortName(); ?> $<?php echo $helper->lowerFirst($modelClass->getShortName()); ?>, Request $request, ScopeFetcherInterface $scopeFetcher, <?php echo $queryHandler->getShortName(); ?> $queryHandler): JsonResponse
     {
         $query = new <?php echo $entityQueryClass->getShortName(); ?>(
             $<?php echo $helper->lowerFirst($modelClass->getShortName()); ?>->getId(),
-            $scopeFetcher->getAvailable(RequestBag::get($request, '$scope'))
+            $scopeFetcher->getAvailable(RequestBag::get($request, 'scope'))
         );
         $data = $queryHandler->get<?php echo $modelClass->getShortName(); ?>Data($query);
 

@@ -126,7 +126,7 @@ final class ParamDescriber implements RouteDescriberInterface
             $operation->parameters,
             static function ($parameter): bool {
                 return !($parameter instanceof OA\Parameter
-                    && 'X-User-Token' === $parameter->name
+                    && 'Authorization' === $parameter->name
                     && 'header' === $parameter->in);
             }
         ));
@@ -134,7 +134,7 @@ final class ParamDescriber implements RouteDescriberInterface
 
     private function getFormContentSchema(OA\RequestBody $requestBody): OA\Schema
     {
-        $contentType = 'application/x-www-form-urlencoded';
+        $contentType = 'application/json';
         $requestBody->content = Generator::UNDEFINED !== $requestBody->content ? $requestBody->content : [];
 
         /** @var array<string, OA\MediaType> $content */

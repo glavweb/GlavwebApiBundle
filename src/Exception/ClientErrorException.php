@@ -8,7 +8,7 @@ use Glavweb\ApiBundle\ErrorCodes;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
- * Client-facing API error (HTTP 420 in ExceptionListener).
+ * Client-facing API error. HTTP status is chosen in ExceptionListener: 400, 401, 404 or 422.
  *
  * @author Andrey Nilov <nilov@glavweb.ru>
  */
@@ -16,10 +16,15 @@ class ClientErrorException extends AppException
 {
     private ?ConstraintViolationListInterface $violations = null;
 
+    /**
+     * Пустой список violations допустим: exception без `fields`, только message/code.
+     */
     public static function withViolationList(string $message, ConstraintViolationListInterface $violations, int $code = ErrorCodes::FORM_VALIDATION_FAILED): static
     {
         $exception = new static($message, $code);
-        $exception->setViolations($violations);
+        if ($violations->count() > 0) {
+            $exception->setViolations($violations);
+        }
 
         return $exception;
     }

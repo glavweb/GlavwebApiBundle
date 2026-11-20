@@ -8,20 +8,25 @@ use Glavweb\ApiBundle\Query\ResultSet;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
- * Class ResultSetResponse.
+ * Список API: 200 и тело { list, total, offset, limit }.
+ *
+ * offset и limit — фактически применённые значения выборки, не эхо запроса.
  *
  * @author Andrey Nilov <nilov@glavweb.ru>
  */
 class ResultSetResponse extends JsonResponse
 {
     /**
-     * ListResponse constructor.
+     * @param list<mixed> $data
      */
     public function __construct(array $data, ?int $offset = null, ?int $limit = null, ?int $total = null)
     {
-        parent::__construct($data, 200, []);
-
-        $this->setContentRangeHeader($offset, $limit, $total);
+        parent::__construct([
+            'list' => $data,
+            'total' => $total,
+            'offset' => $offset,
+            'limit' => $limit,
+        ]);
     }
 
     public static function fromResultSet(ResultSet $resultSet): self
@@ -32,34 +37,5 @@ class ResultSetResponse extends JsonResponse
             $resultSet->getLimit(),
             $resultSet->getTotal()
         );
-    }
-
-    protected function setContentRangeHeader(?int $offset, ?int $limit, ?int $total): void
-    {
-        $offset = (int) $offset;
-        $total = (int) $total;
-        $range = '*/0';
-
-        if ($total > 0) {
-            if (null === $limit) {
-                $end = $total - 1;
-            } else {
-                $end = min($offset + $limit - 1, max($offset, $total - 1));
-            }
-            if (null !== $limit && 0 === (int) $limit) {
-                $offset = '';
-                $end = '';
-            }
-
-            $range = "$offset-$end/$total";
-        }
-
-        $this->headers->set('Content-Range', "items $range");
-
-        $needPartialContentStatus = $offset > 0 || (null !== $limit && $total > $limit);
-
-        if ($needPartialContentStatus) {
-            $this->setStatusCode(self::HTTP_PARTIAL_CONTENT);
-        }
     }
 }

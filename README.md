@@ -4,9 +4,11 @@ CQRS/REST: attributes, Populator, ParamFetcher, ScopeFetcher, ResultSet, Nelmio 
 
 RequestBag — из `glavweb/extra-bundle`; доменные исключения — из `glavweb/framework-bundle`.
 
-## X-User-Token (access_token firewall)
+## Authorization: Bearer (access_token firewall)
 
-Вся схема в `Glavweb\ApiBundle\Security`: `UserProviderTokenInterface`, `AccessToken\XUserTokenExtractor`,
+Токен — непрозрачная строка, не JWT. Клиент передаёт `Authorization: Bearer <token>`.
+
+Вся схема в `Glavweb\ApiBundle\Security`: `UserProviderTokenInterface`, `AccessToken\BearerTokenExtractor`,
 `AccessToken\UserTokenHandler`, `AccessToken\UserTokenAuthenticationFailureHandler` / `UserTokenAuthenticationEntryPoint` (401 JSON).
 Хранение токенов — в проекте: `UserManager` реализует `UserProviderTokenInterface::loadUserByToken()`.
 
@@ -20,7 +22,7 @@ api:
     entry_point: Glavweb\ApiBundle\Security\AccessToken\UserTokenAuthenticationEntryPoint
     access_token:
         token_extractors:
-            - Glavweb\ApiBundle\Security\AccessToken\XUserTokenExtractor
+            - Glavweb\ApiBundle\Security\AccessToken\BearerTokenExtractor
         token_handler: Glavweb\ApiBundle\Security\AccessToken\UserTokenHandler
         failure_handler: Glavweb\ApiBundle\Security\AccessToken\UserTokenAuthenticationFailureHandler
 ```

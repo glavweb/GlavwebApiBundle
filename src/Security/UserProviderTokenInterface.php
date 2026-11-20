@@ -9,7 +9,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**
- * User provider that can resolve a user by API access token (X-User-Token).
+ * User provider that can resolve a user by an opaque Bearer token.
  *
  * Implemented by the project UserManager; alias it in services.yaml:
  * `Glavweb\ApiBundle\Security\UserProviderTokenInterface: '@App\Model\User\UserManager'`.

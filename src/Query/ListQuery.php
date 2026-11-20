@@ -23,14 +23,14 @@ abstract class ListQuery
      * Лимит.
      */
     #[FromRequest]
-    #[SystemRequestField('$limit')]
+    #[SystemRequestField('limit')]
     public ?int $limit = null;
 
     /**
      * Сдвиг.
      */
     #[FromRequest]
-    #[SystemRequestField('$offset')]
+    #[SystemRequestField('offset')]
     public ?int $offset = null;
 
     /**
@@ -39,7 +39,7 @@ abstract class ListQuery
      * Пример: {"id":"asc"} или {"id":"desc"}
      */
     #[FromRequest]
-    #[SystemRequestField('$sort')]
+    #[SystemRequestField('sort')]
     public ?string $sort = null;
 
     public function __construct(?string $scope = null)
